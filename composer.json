@@ -1,0 +1,27 @@
+{
+    "name": "badams/symfony-amazon-sdk-mailer",
+    "type": "symfony-bridge",
+    "description": "Transport for Symfony Mailer that utilizes the official Amazon SDK",
+    "keywords": [],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Byron Adams",
+            "email": "byron.adams54@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2.5",
+        "symfony/mailer": "^4.4|^5.0",
+        "aws/aws-sdk-php": "^3.113"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.5"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "Badams\\AmazonMailerSdk\\": "src/"
+        }
+    }
+}
