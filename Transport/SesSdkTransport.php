@@ -14,6 +14,7 @@ namespace Badams\AmazonMailerSdk\Transport;
 use Aws\Credentials\Credentials;
 use Aws\Credentials\CredentialsInterface;
 use Aws\Ses\Exception\SesException;
+use Aws\SesV2\SesV2Client;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Component\Mailer\Exception\TransportException;
@@ -22,7 +23,6 @@ use Symfony\Component\Mailer\Transport\AbstractTransport;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\MessageConverter;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Aws\SesV2\SesV2Client;
 
 /**
  * @author Byron Adams
@@ -76,11 +76,7 @@ class SesSdkTransport extends AbstractTransport
             $response = $this->doSendSdk($email, $message->getEnvelope());
             $message->setMessageId($response->get('MessageId'));
         } catch (SesException $exception) {
-            throw new TransportException(sprintf(
-                'Unable to send an email: %s (code %s).',
-                $exception->getAwsErrorMessage() ?: $exception->getMessage(),
-                $exception->getStatusCode() ?: $exception->getCode()
-            ));
+            throw new TransportException(sprintf('Unable to send an email: %s (code %s).', $exception->getAwsErrorMessage() ?: $exception->getMessage(), $exception->getStatusCode() ?: $exception->getCode()));
         }
     }
 
@@ -99,8 +95,8 @@ class SesSdkTransport extends AbstractTransport
                 'BccAddresses' => $this->stringifyAddresses($email->getBcc()),
             ],
             'Content' => [
-                'Raw' => ['Data' => $email->toString()]
-            ]
+                'Raw' => ['Data' => $email->toString()],
+            ],
         ];
     }
 

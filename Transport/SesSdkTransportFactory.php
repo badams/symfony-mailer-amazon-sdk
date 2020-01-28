@@ -11,12 +11,12 @@
 
 namespace Badams\AmazonMailerSdk\Transport;
 
+use Aws\Credentials\CredentialProvider;
+use Aws\Credentials\Credentials;
 use Symfony\Component\Mailer\Exception\UnsupportedSchemeException;
 use Symfony\Component\Mailer\Transport\AbstractTransportFactory;
 use Symfony\Component\Mailer\Transport\Dsn;
 use Symfony\Component\Mailer\Transport\TransportInterface;
-use Aws\Credentials\CredentialProvider;
-use Aws\Credentials\Credentials;
 
 final class SesSdkTransportFactory extends AbstractTransportFactory
 {
