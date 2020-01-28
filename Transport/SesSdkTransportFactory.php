@@ -11,40 +11,43 @@
 
 namespace Badams\AmazonMailerSdk\Transport;
 
-use Aws\Credentials\Credentials;
+use Symfony\Component\Mailer\Exception\UnsupportedSchemeException;
 use Symfony\Component\Mailer\Transport\AbstractTransportFactory;
 use Symfony\Component\Mailer\Transport\Dsn;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use Aws\Credentials\CredentialProvider;
+use Aws\Credentials\Credentials;
 
 final class SesSdkTransportFactory extends AbstractTransportFactory
 {
     public function create(Dsn $dsn): TransportInterface
     {
+        if (!$this->supports($dsn)) {
+            throw new UnsupportedSchemeException($dsn);
+        }
+
         $region = $dsn->getOption('region');
-        return new SesSdkTransport(self::getCredentials($dsn), $region);
+
+        return new SesSdkTransport($this->getCredentials($dsn), $region, $this->dispatcher, $this->logger);
     }
 
-    protected static function getCredentials(Dsn $dsn): callable
+    protected function getCredentials(Dsn $dsn): callable
     {
         $user = $dsn->getUser();
         $password = $dsn->getPassword();
         $credentialType = $dsn->getOption('credentials');
 
-        if (null !== $user && null !== $password) {
+        if (null !== $user || null !== $password) {
             return CredentialProvider::fromCredentials(new Credentials($user, $password));
         }
 
-        if ('env' === $credentialType) {
-            return CredentialProvider::env();
-        }
-
-        if ('instance' === $credentialType) {
-            return CredentialProvider::instanceProfile();
-        }
-
-        if ('ecs' === $credentialType) {
-            return CredentialProvider::ecsCredentials();
+        switch ($credentialType) {
+            case 'env':
+                return CredentialProvider::env();
+            case 'instance':
+                return CredentialProvider::instanceProfile();
+            case 'ecs':
+                return CredentialProvider::ecsCredentials();
         }
 
         return CredentialProvider::defaultProvider();

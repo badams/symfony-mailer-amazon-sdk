@@ -11,6 +11,8 @@
 
 namespace Badams\AmazonMailerSdk\Transport;
 
+use Aws\Credentials\Credentials;
+use Aws\Credentials\CredentialsInterface;
 use Aws\Ses\Exception\SesException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Envelope;
@@ -29,21 +31,39 @@ class SesSdkTransport extends AbstractTransport
 {
     private $client;
 
+    /**
+     * @var CredentialsInterface
+     */
+    private $credentials;
+
     public function __toString(): string
     {
-        return sprintf('ses+sdk://...@%s', $this->client->getCredentials(), $this->getEndpoint());
+        try {
+            $credentials = $this->getCredentials();
+        } catch (\Exception $exception) {
+            $credentials = new Credentials('', '');
+        }
+
+        return sprintf(
+            'ses+sdk://%s:%s@default?region=%s',
+            urlencode($credentials->getAccessKeyId()),
+            urlencode($credentials->getSecretKey()),
+            $this->client->getRegion()
+        );
     }
 
     public function __construct(
         callable $credentials,
         string $region = null,
         EventDispatcherInterface $dispatcher = null,
-        LoggerInterface $logger = null
+        LoggerInterface $logger = null,
+        $handler = null
     ) {
         $this->client = new SesV2Client([
             'version' => 'latest',
             'region' => $region ?: 'eu-west-1',
             'credentials' => $credentials,
+            'handler' => $handler,
         ]);
 
         parent::__construct($dispatcher, $logger);
@@ -74,7 +94,7 @@ class SesSdkTransport extends AbstractTransport
         return [
             'FromEmailAddress' => $envelope->getSender()->toString(),
             'Destination' => [
-                'ToAddresses' => $this->stringifyAddresses($envelope->getRecipients()),
+                'ToAddresses' => $this->stringifyAddresses($email->getTo()),
                 'CcAddresses' => $this->stringifyAddresses($email->getCc()),
                 'BccAddresses' => $this->stringifyAddresses($email->getBcc()),
             ],
@@ -82,5 +102,14 @@ class SesSdkTransport extends AbstractTransport
                 'Raw' => ['Data' => $email->toString()]
             ]
         ];
+    }
+
+    public function getCredentials()
+    {
+        if (null === $this->credentials) {
+            $this->credentials = $this->client->getCredentials()->wait();
+        }
+
+        return $this->credentials;
     }
 }
