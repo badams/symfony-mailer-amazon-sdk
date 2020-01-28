@@ -46,3 +46,13 @@ This transport supports configuration via DSN, below are example DSNs demonstrat
 | Environment Variables | ses+sdk://eu-west-1?credentials=env       | [Link](https://docs.aws.amazon.com/aws-sdk-php/v3/api/class-Aws.Credentials.CredentialProvider.html#_env)             |
 | Instance Profile      | ses+sdk://ap-south-2?credentials=instance | [Link](https://docs.aws.amazon.com/aws-sdk-php/v3/api/class-Aws.Credentials.CredentialProvider.html#_instanceProfile) |
 | ECS                   | ses+sdk://us-east-1?credentials=ecs       | [Link](https://docs.aws.amazon.com/aws-sdk-php/v3/api/class-Aws.Credentials.CredentialProvider.html#_instanceProfile) |
+
+
+####SES Configuration Sets
+> Configuration sets are groups of rules that you can apply to the emails you send using Amazon SES. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email. For more information about specifying configuration sets in your emails, see Specifying a Configuration Set When You Send Email.
+- https://docs.aws.amazon.com/ses/latest/DeveloperGuide/using-configuration-sets.html
+
+This transport supports Configuration Sets, all you need to do is specify the `ConfigurationSetName` as query string parameter in your DSN like so
+```
+ses+sdk://eu-west1?ConfigurationSetName=MyConfigurationSet
+```
