@@ -9,7 +9,7 @@ jobs:
   codeception:
     runs-on: ubuntu-latest
     env:
-      CODECOVE_TOKEN: ${{secrets.CODECOVE_TOKEN}}
+      CODECOV_TOKEN: ${{secrets.CODECOV_TOKEN}}
     steps:
       - uses: actions/checkout@v1
       - name: Setup PHP
