@@ -17,6 +17,7 @@ use Aws\MockHandler;
 use Aws\CommandInterface;
 use Psr\Http\Message\RequestInterface;
 use Symfony\Component\Mime\Address;
+use Badams\AmazonMailerSdk\SesSdkTransportConfig;
 
 
 class SesSdkTransportTest extends \PHPUnit\Framework\TestCase
@@ -49,8 +50,7 @@ class SesSdkTransportTest extends \PHPUnit\Framework\TestCase
         };
 
         $transport = new SesSdkTransport(
-            $this->createCredentialsResolver('ACCESS_KEY', 'SECRET_KEY'),
-            'eu-west-1',
+            $this->createConfig('ACCESS_KEY', 'SECRET_KEY', 'eu-west-1'),
             null,
             null,
             $mockHandler);
@@ -71,12 +71,10 @@ class SesSdkTransportTest extends \PHPUnit\Framework\TestCase
         };
 
         $transport = new SesSdkTransport(
-            $this->createCredentialsResolver('ACCESS_KEY', 'SECRET_KEY'),
-            'eu-west-1',
+            $this->createConfig('ACCESS_KEY', 'SECRET_KEY', 'eu-west-1'),
             null,
             null,
             $mockHandler);
-
 
         $this->expectException(\Symfony\Component\Mailer\Exception\TransportException::class);
         $this->expectExceptionMessage('Unable to send an email: ERRR (code 0).');
@@ -98,29 +96,33 @@ class SesSdkTransportTest extends \PHPUnit\Framework\TestCase
     public function toStringProvider(): iterable
     {
         yield [
-            new SesSdkTransport($this->createCredentialsResolver('ACCESS_KEY', 'SECRET_KEY'), 'eu-east-1'),
+            new SesSdkTransport($this->createConfig('ACCESS_KEY', 'SECRET_KEY', 'eu-east-1')),
             'ses+sdk://ACCESS_KEY:SECRET_KEY@eu-east-1'
         ];
 
         yield [
-            new SesSdkTransport($this->createCredentialsResolver('ACCESS_KEY', 'SECRET_KEY'), 'us-east-1'),
+            new SesSdkTransport($this->createConfig('ACCESS_KEY', 'SECRET_KEY', 'us-east-1')),
             'ses+sdk://ACCESS_KEY:SECRET_KEY@us-east-1'
         ];
 
         yield [
-            new SesSdkTransport(function () {
+            new SesSdkTransport(new SesSdkTransportConfig(function () {
                 return new \GuzzleHttp\Promise\RejectedPromise('bad things happened');
-            }, 'eu-west-1'),
+            }, 'eu-west-1')),
             'ses+sdk://:@eu-west-1'
         ];
     }
 
-    private function createCredentialsResolver($key, $secret)
+    private function createConfig($key, $secret, $region, $options = [])
     {
-        return function () use ($key, $secret) {
-            $promise = new Promise();
-            $promise->resolve(new Credentials($key, $secret));
-            return $promise;
-        };
+        return new SesSdkTransportConfig(
+            function () use ($key, $secret) {
+                $promise = new Promise();
+                $promise->resolve(new Credentials($key, $secret));
+                return $promise;
+            },
+            $region,
+            $options
+        );
     }
 }

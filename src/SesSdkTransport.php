@@ -29,6 +29,8 @@ class SesSdkTransport extends AbstractTransport
 
     private $credentials;
 
+    private $config;
+
     public function __toString(): string
     {
         try {
@@ -46,16 +48,17 @@ class SesSdkTransport extends AbstractTransport
     }
 
     public function __construct(
-        callable $credentials,
-        string $region,
+        SesSdkTransportConfig $config,
         EventDispatcherInterface $dispatcher = null,
         LoggerInterface $logger = null,
         $handler = null
     ) {
+        $this->config = $config;
+
         $this->client = new SesV2Client([
             'version' => 'latest',
-            'region' => $region,
-            'credentials' => $credentials,
+            'region' => $this->config->getRegion(),
+            'credentials' => $this->config->getCredentials(),
             'handler' => $handler,
         ]);
 
@@ -82,7 +85,7 @@ class SesSdkTransport extends AbstractTransport
 
     protected function getPayload(Email $email, Envelope $envelope)
     {
-        return [
+        return array_merge($this->config->getOptions(), [
             'FromEmailAddress' => $envelope->getSender()->toString(),
             'Destination' => [
                 'ToAddresses' => $this->stringifyAddresses($email->getTo()),
@@ -92,7 +95,7 @@ class SesSdkTransport extends AbstractTransport
             'Content' => [
                 'Raw' => ['Data' => $email->toString()],
             ],
-        ];
+        ]);
     }
 
     /**

@@ -26,7 +26,11 @@ final class SesSdkTransportFactory extends AbstractTransportFactory
             throw new UnsupportedSchemeException($dsn);
         }
 
-        return new SesSdkTransport($this->getCredentials($dsn), $dsn->getHost(), $this->dispatcher, $this->logger);
+        $config = new SesSdkTransportConfig($this->getCredentials($dsn), $dsn->getHost(), [
+            'ConfigurationSetName' => $dsn->getOption('ConfigurationSetName'),
+        ]);
+
+        return new SesSdkTransport($config, $this->dispatcher, $this->logger);
     }
 
     protected function getCredentials(Dsn $dsn): callable
