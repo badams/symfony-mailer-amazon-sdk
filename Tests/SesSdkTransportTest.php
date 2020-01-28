@@ -50,7 +50,7 @@ class SesSdkTransportTest extends \PHPUnit\Framework\TestCase
 
         $transport = new SesSdkTransport(
             $this->createCredentialsResolver('ACCESS_KEY', 'SECRET_KEY'),
-            null,
+            'eu-west-1',
             null,
             null,
             $mockHandler);
@@ -72,7 +72,7 @@ class SesSdkTransportTest extends \PHPUnit\Framework\TestCase
 
         $transport = new SesSdkTransport(
             $this->createCredentialsResolver('ACCESS_KEY', 'SECRET_KEY'),
-            null,
+            'eu-west-1',
             null,
             null,
             $mockHandler);
@@ -99,19 +99,19 @@ class SesSdkTransportTest extends \PHPUnit\Framework\TestCase
     {
         yield [
             new SesSdkTransport($this->createCredentialsResolver('ACCESS_KEY', 'SECRET_KEY'), 'eu-east-1'),
-            'ses+sdk://ACCESS_KEY:SECRET_KEY@default?region=eu-east-1'
+            'ses+sdk://ACCESS_KEY:SECRET_KEY@eu-east-1'
         ];
 
         yield [
-            new SesSdkTransport($this->createCredentialsResolver('ACCESS_KEY', 'SECRET_KEY')),
-            'ses+sdk://ACCESS_KEY:SECRET_KEY@default?region=eu-west-1'
+            new SesSdkTransport($this->createCredentialsResolver('ACCESS_KEY', 'SECRET_KEY'), 'us-east-1'),
+            'ses+sdk://ACCESS_KEY:SECRET_KEY@us-east-1'
         ];
 
         yield [
             new SesSdkTransport(function () {
                 return new \GuzzleHttp\Promise\RejectedPromise('bad things happened');
-            }),
-            'ses+sdk://:@default?region=eu-west-1'
+            }, 'eu-west-1'),
+            'ses+sdk://:@eu-west-1'
         ];
     }
 

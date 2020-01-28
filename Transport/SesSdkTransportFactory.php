@@ -26,9 +26,7 @@ final class SesSdkTransportFactory extends AbstractTransportFactory
             throw new UnsupportedSchemeException($dsn);
         }
 
-        $region = $dsn->getOption('region');
-
-        return new SesSdkTransport($this->getCredentials($dsn), $region, $this->dispatcher, $this->logger);
+        return new SesSdkTransport($this->getCredentials($dsn), $dsn->getHost(), $this->dispatcher, $this->logger);
     }
 
     protected function getCredentials(Dsn $dsn): callable

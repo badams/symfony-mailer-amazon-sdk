@@ -121,7 +121,7 @@ class SesSdkTransportFactoryTest extends TestCase
         $logger = $this->getLogger();
 
         yield [
-            new Dsn('ses+sdk', 'default', self::USER, self::PASSWORD, null, ['region' => 'us-west-1']),
+            new Dsn('ses+sdk', 'us-west-1', self::USER, self::PASSWORD),
             new SesSdkTransport(
                 $this->createCredentialsResolver(self::USER, self::PASSWORD),
                 'us-west-1',
@@ -131,8 +131,7 @@ class SesSdkTransportFactoryTest extends TestCase
         ];
 
         yield [
-            new Dsn('ses+sdk', 'default', null, null, null, [
-                'region' => 'ap-south-2',
+            new Dsn('ses+sdk', 'ap-south-2', null, null, null, [
                 'credentials' => 'env',
             ]),
             new SesSdkTransport(
@@ -144,8 +143,7 @@ class SesSdkTransportFactoryTest extends TestCase
         ];
 
         yield [
-            new Dsn('ses+sdk', 'default', null, null, null, [
-                'region' => 'ap-south-2',
+            new Dsn('ses+sdk', 'ap-south-2', null, null, null, [
                 'credentials' => 'instance',
             ]),
             new SesSdkTransport(
@@ -157,7 +155,7 @@ class SesSdkTransportFactoryTest extends TestCase
         ];
 
         yield [
-            new Dsn('ses+sdk', 'default', null, null, null, ['credentials' => 'ecs']),
+            new Dsn('ses+sdk', 'eu-west-1', null, null, null, ['credentials' => 'ecs']),
             new SesSdkTransport(
                 $this->createCredentialsResolver(self::ECS_USER, self::ECS_PASSWORD),
                 'eu-west-1',
@@ -167,7 +165,7 @@ class SesSdkTransportFactoryTest extends TestCase
         ];
 
         yield [
-            new Dsn('ses+sdk', 'default', null, null, null),
+            new Dsn('ses+sdk', 'eu-west-1', null, null, null),
             new SesSdkTransport(
                 $this->createCredentialsResolver(self::DEFAULT_USER, self::DEFAULT_PASSWORD),
                 'eu-west-1',

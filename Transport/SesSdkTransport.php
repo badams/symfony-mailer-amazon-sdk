@@ -45,7 +45,7 @@ class SesSdkTransport extends AbstractTransport
         }
 
         return sprintf(
-            'ses+sdk://%s:%s@default?region=%s',
+            'ses+sdk://%s:%s@%s',
             urlencode($credentials->getAccessKeyId()),
             urlencode($credentials->getSecretKey()),
             $this->client->getRegion()
@@ -54,14 +54,14 @@ class SesSdkTransport extends AbstractTransport
 
     public function __construct(
         callable $credentials,
-        string $region = null,
+        string $region,
         EventDispatcherInterface $dispatcher = null,
         LoggerInterface $logger = null,
         $handler = null
     ) {
         $this->client = new SesV2Client([
             'version' => 'latest',
-            'region' => $region ?: 'eu-west-1',
+            'region' => $region,
             'credentials' => $credentials,
             'handler' => $handler,
         ]);
