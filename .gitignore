@@ -4,3 +4,4 @@ phpunit.xml
 .phpunit.result.cache
 Tests/output
 coverage.xml
+.php_cs.cache
