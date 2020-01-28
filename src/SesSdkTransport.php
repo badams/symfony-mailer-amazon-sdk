@@ -12,7 +12,6 @@
 namespace Badams\AmazonMailerSdk;
 
 use Aws\Credentials\Credentials;
-use Aws\Credentials\CredentialsInterface;
 use Aws\Ses\Exception\SesException;
 use Aws\SesV2\SesV2Client;
 use Psr\Log\LoggerInterface;
@@ -68,7 +67,7 @@ class SesSdkTransport extends AbstractTransport
         try {
             $email = MessageConverter::toEmail($message->getOriginalMessage());
             $response = $this->doSendSdk($email, $message->getEnvelope());
-            $message->setMessageId((string)$response->get('MessageId'));
+            $message->setMessageId((string) $response->get('MessageId'));
         } catch (SesException $exception) {
             $message = $exception->getAwsErrorMessage() ?: $exception->getMessage();
             $code = $exception->getStatusCode() ?: $exception->getCode();
