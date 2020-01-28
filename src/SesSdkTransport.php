@@ -39,11 +39,14 @@ class SesSdkTransport extends AbstractTransport
             $credentials = new Credentials('', '');
         }
 
+        $parameters = http_build_query($this->config->getOptions());
+
         return sprintf(
-            'ses+sdk://%s:%s@%s',
+            'ses+sdk://%s:%s@%s%s',
             urlencode($credentials->getAccessKeyId()),
             urlencode($credentials->getSecretKey()),
-            $this->client->getRegion()
+            $this->client->getRegion(),
+            !empty($parameters) ? '?'.$parameters : ''
         );
     }
 
