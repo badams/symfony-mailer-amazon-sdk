@@ -136,6 +136,13 @@ class SesSdkTransportTest extends \PHPUnit\Framework\TestCase
             }, 'eu-west-1')),
             'ses+sdk://:@eu-west-1'
         ];
+
+        yield [
+            new SesSdkTransport($this->createConfig('ACCESS_KEY', 'SECRET_KEY', 'us-east-1', [
+                'ConfigurationSetName' => 'Foobar'
+            ])),
+            'ses+sdk://ACCESS_KEY:SECRET_KEY@us-east-1?ConfigurationSetName=Foobar'
+        ];
     }
 
     private function createConfig($key, $secret, $region, $options = [])
