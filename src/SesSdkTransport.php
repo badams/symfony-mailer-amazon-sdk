@@ -28,9 +28,6 @@ class SesSdkTransport extends AbstractTransport
 {
     private $client;
 
-    /**
-     * @var CredentialsInterface
-     */
     private $credentials;
 
     public function __toString(): string
@@ -71,9 +68,11 @@ class SesSdkTransport extends AbstractTransport
         try {
             $email = MessageConverter::toEmail($message->getOriginalMessage());
             $response = $this->doSendSdk($email, $message->getEnvelope());
-            $message->setMessageId($response->get('MessageId'));
+            $message->setMessageId((string)$response->get('MessageId'));
         } catch (SesException $exception) {
-            throw new TransportException(sprintf('Unable to send an email: %s (code %s).', $exception->getAwsErrorMessage() ?: $exception->getMessage(), $exception->getStatusCode() ?: $exception->getCode()));
+            $message = $exception->getAwsErrorMessage() ?: $exception->getMessage();
+            $code = $exception->getStatusCode() ?: $exception->getCode();
+            throw new TransportException(sprintf('Unable to send an email: %s (code %s).', $message, $code));
         }
     }
 
@@ -97,7 +96,10 @@ class SesSdkTransport extends AbstractTransport
         ];
     }
 
-    public function getCredentials()
+    /**
+     * @return Credentials
+     */
+    protected function getCredentials()
     {
         if (null === $this->credentials) {
             $this->credentials = $this->client->getCredentials()->wait();
