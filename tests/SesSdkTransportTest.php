@@ -81,6 +81,31 @@ class SesSdkTransportTest extends \PHPUnit\Framework\TestCase
         $transport->send($email);
     }
 
+    public function testConfigurationSetName()
+    {
+        $email = (new Email())
+            ->from('test@ses-sdk.com')
+            ->addTo('to@test.com')
+            ->text('Test');
+
+        $mockHandler = function (CommandInterface $cmd) {
+            $data = $cmd->toArray();
+            $this->assertArrayHasKey('ConfigurationSetName', $data);
+            $this->assertEquals('MyConfigSet', $data['ConfigurationSetName']);
+            return new \Aws\Result();
+        };
+
+        $transport = new SesSdkTransport(
+            $this->createConfig('ACCESS_KEY', 'SECRET_KEY', 'eu-west-1', [
+                'ConfigurationSetName' => 'MyConfigSet'
+            ]),
+            null,
+            null,
+            $mockHandler);
+
+        $transport->send($email);
+    }
+
     /**
      * @dataProvider toStringProvider
      *

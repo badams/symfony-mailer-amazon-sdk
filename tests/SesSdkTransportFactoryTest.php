@@ -168,6 +168,19 @@ class SesSdkTransportFactoryTest extends TestCase
                 $logger
             ),
         ];
+
+        yield [
+            new Dsn('ses+sdk', 'ap-south-2', null, null, null, [
+                'ConfigurationSetName' => 'TestConfigSet',
+            ]),
+            new SesSdkTransport(
+                $this->createConfig(self::DEFAULT_USER, self::DEFAULT_PASSWORD, 'ap-south-2', [
+                    'ConfigurationSetName' => 'TestConfigSet'
+                ]),
+                $dispatcher,
+                $logger
+            ),
+        ];
     }
 
     public function unsupportedSchemeProvider(): iterable
