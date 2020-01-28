@@ -1,4 +1,4 @@
-symfony-amazon-mailer-sdk
+Symfony Mailer Amazon SDK Transport
 ================================
 
 [![CI Action](https://github.com/badams/symfony-mailer-amazon-sdk/workflows/continuous-integration/badge.svg)](https://github.com/badams/symfony-mailer-amazon-sdk/workflows/continuous-integration)
@@ -15,7 +15,7 @@ Getting Started
 Read the [documentation](https://symfony.com/doc/current/components/mailer.html) for the symfony/mailer package.
 
 ```bash
- composer require badams/symfony-amazon-sdk-mailer
+ composer require badams/symfony-mailer-amazon-sdk
 ```
 
 Below is an example of manually configuring the mailer component to use this transport

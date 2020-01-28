@@ -1,5 +1,5 @@
 {
-    "name": "badams/symfony-amazon-sdk-mailer",
+    "name": "badams/symfony-mailer-amazon-sdk",
     "type": "symfony-bridge",
     "description": "Transport for Symfony Mailer that utilizes the official Amazon SDK",
     "keywords": [],
