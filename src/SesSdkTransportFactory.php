@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Badams\AmazonMailerSdk\Transport;
+namespace Badams\AmazonMailerSdk;
 
 use Aws\Credentials\CredentialProvider;
 use Aws\Credentials\Credentials;

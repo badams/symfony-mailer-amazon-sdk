@@ -10,8 +10,8 @@
  */
 
 use Aws\Credentials\Credentials;
-use Badams\AmazonMailerSdk\Transport\SesSdkTransport;
-use Badams\AmazonMailerSdk\Transport\SesSdkTransportFactory;
+use Badams\AmazonMailerSdk\SesSdkTransport;
+use Badams\AmazonMailerSdk\SesSdkTransportFactory;
 use GuzzleHttp\Promise\Promise;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;

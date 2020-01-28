@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Badams\AmazonMailerSdk\Transport;
+namespace Badams\AmazonMailerSdk;
 
 use Aws\Credentials\Credentials;
 use Aws\Credentials\CredentialsInterface;
@@ -24,9 +24,6 @@ use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\MessageConverter;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-/**
- * @author Byron Adams
- */
 class SesSdkTransport extends AbstractTransport
 {
     private $client;

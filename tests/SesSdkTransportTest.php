@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-use Badams\AmazonMailerSdk\Transport\SesSdkTransport;
+use Badams\AmazonMailerSdk\SesSdkTransport;
 use GuzzleHttp\Promise\Promise;
 use Aws\Credentials\Credentials;
 use Symfony\Component\Mime\Email;

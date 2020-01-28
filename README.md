@@ -20,10 +20,10 @@ Read the [documentation](https://symfony.com/doc/current/components/mailer.html)
 
 Below is an example of manually configuring the mailer component to use this transport
 ```php
-use \Badams\AmazonMailerSdk\Transport;
+use Badams\AmazonMailerSdk;
 
 $factory = new Symfony\Component\Mailer\Transport([
-     new Transport\SesSdkTransportFactory()
+     new SesSdkTransportFactory()
 ]);
 
 $transport = $factory->fromString('ses+sdk://ap-south-2?credentials=env');
