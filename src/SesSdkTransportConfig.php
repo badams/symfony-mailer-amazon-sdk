@@ -28,7 +28,7 @@ class SesSdkTransportConfig
      */
     private $options = [];
 
-    public function __construct($credentials, $region, $options = [])
+    public function __construct(callable $credentials, string $region, array $options = [])
     {
         $this->credentials = $credentials;
         $this->region = $region;
