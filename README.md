@@ -9,4 +9,37 @@ An SES transport built for the [symfony/mailer](https://github.com/symfony/maile
 This differs from the official [symfony/amazon-mailer](https://github.com/symfony/amazon-mailer) as it relies on the official amazon sdk for authentication, meaning support for instance 
 based authentication on EC2 boxes will work out of the box.  
 
----
+Getting Started
+--------------
+
+Read the [documentation](https://symfony.com/doc/current/components/mailer.html) for the symfony/mailer package.
+
+```bash
+ composer require badams/symfony-amazon-sdk-mailer
+```
+
+Below is an example of manually configuring the mailer component to use this transport
+```php
+use \Badams\AmazonMailerSdk\Transport;
+
+$factory = new Symfony\Component\Mailer\Transport([
+     new Transport\SesSdkTransportFactory()
+]);
+
+$transport = $factory->fromString('ses+sdk://ap-south-2?credentials=env');
+$mailer =  new \Symfony\Component\Mailer\Mailer($transport);
+
+$mailer->send($email);
+```
+
+Configuration
+------------
+
+This transport supports configuration via DSN, below are example DSNs demonstrating how to configure the supported credential providers.
+
+| Authentication        | Example DSN | Docs |
+|-----------------------|-------------------------------------------|---|
+| Static Credentials    | ses+sdk://ACCESS_KEY:SECRET_KEY@eu-west-1 | [Link](https://docs.aws.amazon.com/aws-sdk-php/v3/api/class-Aws.Credentials.CredentialProvider.html#_fromCredentials) |
+| Environment Variables | ses+sdk://eu-west-1?credentials=env       | [Link](https://docs.aws.amazon.com/aws-sdk-php/v3/api/class-Aws.Credentials.CredentialProvider.html#_env)
+| Instance Profile      | ses+sdk://ap-south-2?credentials=instance | [Link](https://docs.aws.amazon.com/aws-sdk-php/v3/api/class-Aws.Credentials.CredentialProvider.html#_instanceProfile)
+| ECS                   | ses+sdk://us-east-1?credentials=ecs       | [Link](https://docs.aws.amazon.com/aws-sdk-php/v3/api/class-Aws.Credentials.CredentialProvider.html#_instanceProfile)
