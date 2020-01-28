@@ -123,8 +123,7 @@ class SesSdkTransportFactoryTest extends TestCase
         yield [
             new Dsn('ses+sdk', 'us-west-1', self::USER, self::PASSWORD),
             new SesSdkTransport(
-                $this->createCredentialsResolver(self::USER, self::PASSWORD),
-                'us-west-1',
+                $this->createConfig(self::USER, self::PASSWORD,'us-west-1'),
                 $dispatcher,
                 $logger
             ),
@@ -135,8 +134,7 @@ class SesSdkTransportFactoryTest extends TestCase
                 'credentials' => 'env',
             ]),
             new SesSdkTransport(
-                $this->createCredentialsResolver(self::ENV_USER, self::ENV_PASSWORD),
-                'ap-south-2',
+                $this->createConfig(self::ENV_USER, self::ENV_PASSWORD, 'ap-south-2'),
                 $dispatcher,
                 $logger
             ),
@@ -147,8 +145,7 @@ class SesSdkTransportFactoryTest extends TestCase
                 'credentials' => 'instance',
             ]),
             new SesSdkTransport(
-                $this->createCredentialsResolver(self::INSTANCE_USER, self::INSTANCE_PASSWORD),
-                'ap-south-2',
+                $this->createConfig(self::INSTANCE_USER, self::INSTANCE_PASSWORD, 'ap-south-2'),
                 $dispatcher,
                 $logger
             ),
@@ -157,8 +154,7 @@ class SesSdkTransportFactoryTest extends TestCase
         yield [
             new Dsn('ses+sdk', 'eu-west-1', null, null, null, ['credentials' => 'ecs']),
             new SesSdkTransport(
-                $this->createCredentialsResolver(self::ECS_USER, self::ECS_PASSWORD),
-                'eu-west-1',
+                $this->createConfig(self::ECS_USER, self::ECS_PASSWORD,'eu-west-1'),
                 $dispatcher,
                 $logger
             ),
@@ -167,8 +163,7 @@ class SesSdkTransportFactoryTest extends TestCase
         yield [
             new Dsn('ses+sdk', 'eu-west-1', null, null, null),
             new SesSdkTransport(
-                $this->createCredentialsResolver(self::DEFAULT_USER, self::DEFAULT_PASSWORD),
-                'eu-west-1',
+                $this->createConfig(self::DEFAULT_USER, self::DEFAULT_PASSWORD,'eu-west-1'),
                 $dispatcher,
                 $logger
             ),
@@ -181,6 +176,15 @@ class SesSdkTransportFactoryTest extends TestCase
             new Dsn('foobar', 'default', self::USER, self::PASSWORD),
             'The "foobar" scheme is not supported.',
         ];
+    }
+
+    private function createConfig($key, $secret, $region, $options = [])
+    {
+        return new \Badams\AmazonMailerSdk\SesSdkTransportConfig(
+            $this->createCredentialsResolver($key, $secret),
+            $region,
+            $options
+        );
     }
 
     private function createCredentialsResolver($key, $secret)
