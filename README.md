@@ -14,6 +14,8 @@ Getting Started
 
 Read the [documentation](https://symfony.com/doc/current/components/mailer.html) for the symfony/mailer package.
 
+The transport should be installed using composer. 
+
 ```bash
  composer require badams/symfony-mailer-amazon-sdk
 ```
@@ -38,8 +40,9 @@ Configuration
 This transport supports configuration via DSN, below are example DSNs demonstrating how to configure the supported credential providers.
 
 | Authentication        | Example DSN | Docs |
-|-----------------------|-------------------------------------------|---|
+|-----------------------|-------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| Default Provider      | ses+sdk://eu-east-1                       | [Link](https://docs.aws.amazon.com/aws-sdk-php/v3/api/class-Aws.Credentials.CredentialProvider.html#_defaultProvider) |
 | Static Credentials    | ses+sdk://ACCESS_KEY:SECRET_KEY@eu-west-1 | [Link](https://docs.aws.amazon.com/aws-sdk-php/v3/api/class-Aws.Credentials.CredentialProvider.html#_fromCredentials) |
-| Environment Variables | ses+sdk://eu-west-1?credentials=env       | [Link](https://docs.aws.amazon.com/aws-sdk-php/v3/api/class-Aws.Credentials.CredentialProvider.html#_env)
-| Instance Profile      | ses+sdk://ap-south-2?credentials=instance | [Link](https://docs.aws.amazon.com/aws-sdk-php/v3/api/class-Aws.Credentials.CredentialProvider.html#_instanceProfile)
-| ECS                   | ses+sdk://us-east-1?credentials=ecs       | [Link](https://docs.aws.amazon.com/aws-sdk-php/v3/api/class-Aws.Credentials.CredentialProvider.html#_instanceProfile)
+| Environment Variables | ses+sdk://eu-west-1?credentials=env       | [Link](https://docs.aws.amazon.com/aws-sdk-php/v3/api/class-Aws.Credentials.CredentialProvider.html#_env)             |
+| Instance Profile      | ses+sdk://ap-south-2?credentials=instance | [Link](https://docs.aws.amazon.com/aws-sdk-php/v3/api/class-Aws.Credentials.CredentialProvider.html#_instanceProfile) |
+| ECS                   | ses+sdk://us-east-1?credentials=ecs       | [Link](https://docs.aws.amazon.com/aws-sdk-php/v3/api/class-Aws.Credentials.CredentialProvider.html#_instanceProfile) |
