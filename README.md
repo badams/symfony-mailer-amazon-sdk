@@ -5,9 +5,9 @@ Symfony Mailer Amazon SDK Transport
 [![codecov](https://codecov.io/gh/badams/symfony-mailer-amazon-sdk/branch/master/graph/badge.svg)](https://codecov.io/gh/badams/symfony-mailer-amazon-sdk)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/badams/symfony-mailer-amazon-sdk/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/badams/symfony-mailer-amazon-sdk/?branch=master)
 
-An SES transport built for the [symfony/mailer](https://github.com/symfony/mailer) package which implements support for the official [aws/aws-sdk-php](https://github.com/aws/aws-sdk-php) package.
+An SES transport for the [symfony/mailer](https://github.com/symfony/mailer) package which implements support for the official [aws/aws-sdk-php](https://github.com/aws/aws-sdk-php) package.
 This differs from the official [symfony/amazon-mailer](https://github.com/symfony/amazon-mailer) as it relies on the official amazon sdk for authentication, meaning support for instance 
-based authentication on EC2 boxes will work out of the box.  
+based authentication on EC2 instances will work out of the box.  
 
 Getting Started
 --------------
@@ -48,7 +48,7 @@ This transport supports configuration via DSN, below are example DSNs demonstrat
 | ECS                   | ses+sdk://us-east-1?credentials=ecs       | [Link](https://docs.aws.amazon.com/aws-sdk-php/v3/api/class-Aws.Credentials.CredentialProvider.html#_instanceProfile) |
 
 
-####SES Configuration Sets
+#### SES Configuration Sets
 > Configuration sets are groups of rules that you can apply to the emails you send using Amazon SES. You apply a configuration set to an email by including a reference to the configuration set in the headers of the email. When you apply a configuration set to an email, all of the rules in that configuration set are applied to the email. For more information about specifying configuration sets in your emails, see Specifying a Configuration Set When You Send Email.
 - https://docs.aws.amazon.com/ses/latest/DeveloperGuide/using-configuration-sets.html
 
